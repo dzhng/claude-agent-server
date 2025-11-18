@@ -1,0 +1,16 @@
+{
+  "name": "claude-agent-server",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.1.44",
+    "prettier": "^3.6.2"
+  }
+}

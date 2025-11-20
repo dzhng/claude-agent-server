@@ -4,7 +4,7 @@
  * Usage: bun example-client.ts
  */
 
-import { ClaudeAgentClient } from './src/index'
+import { ClaudeAgentClient, FilesystemEventType } from './src/index'
 
 if (!process.env.E2B_API_KEY) {
   console.error('❌ E2B_API_KEY environment variable is required')
@@ -23,6 +23,25 @@ async function main() {
 
   try {
     await client.start()
+
+    // Set up file watcher
+    console.log('👀 Setting up file watcher...')
+    const watchHandle = await client.watchDir(
+      '.',
+      event => {
+        const eventTypeLabels: Record<string, string> = {
+          [FilesystemEventType.CREATE]: '📄 Created',
+          [FilesystemEventType.WRITE]: '✏️  Modified',
+          [FilesystemEventType.REMOVE]: '🗑️  Deleted',
+          [FilesystemEventType.RENAME]: '📝 Renamed',
+          [FilesystemEventType.CHMOD]: '🔐 Permissions changed',
+        }
+        const label = eventTypeLabels[event.type] || '📁 Changed'
+        console.log(`${label}: ${event.name}`)
+      },
+      { recursive: true },
+    )
+    console.log('✅ File watcher active\n')
 
     console.log('🗂️  Writing input.txt...')
     await client.writeFile(
@@ -71,18 +90,21 @@ async function main() {
     for (const command of commands) {
       console.log(`\n📤 Sending command: ${command.type}`)
       client.send(command)
-
-      // Wait for response
       await new Promise(resolve => setTimeout(resolve, 2000))
     }
 
-    // Disconnect
+    // Keep watching for changes
+    console.log('\n👀 Watching for file changes... (will close in 30 seconds)')
+
+    // Disconnect after 30 seconds
     setTimeout(async () => {
+      console.log('\n🛑 Stopping file watcher...')
+      await watchHandle.stop()
       console.log('\n👋 Closing connection...')
       await client.stop()
       console.log('✅ Sandbox terminated')
       process.exit(0)
-    }, 1000)
+    }, 30000)
   } catch (error) {
     console.error('❌ Error:', error)
     await client.stop()

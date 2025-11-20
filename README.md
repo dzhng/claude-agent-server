@@ -1,3 +1,5 @@
+![download-kg285ggv19c87syh8aebykaxk97vs261 (1)](https://github.com/user-attachments/assets/9934e58d-7f8e-4f79-8427-5f2e65aeaeb0)
+
 # Claude Agent SDK WebSocket Server
 
 A WebSocket server that wraps the Claude Agent SDK, allowing real-time bidirectional communication with Claude through WebSockets. Deploy it as an E2B sandbox and connect via the TypeScript client library.

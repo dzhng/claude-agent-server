@@ -8,8 +8,7 @@
     "start:server": "bun run --elide-lines=0 --filter @claude-agent/server start",
     "start:sandbox": "bun run --filter @claude-agent/server start",
     "build:e2b": "bun run --elide-lines=0 --env-file=.env --filter @claude-agent/e2b-build build",
-    "test:client": "bun run --elide-lines=0 --env-file=.env --filter @dzhng/claude-agent test",
-    "test:local": "bun run --elide-lines=0 --env-file=.env --filter @dzhng/claude-agent test:local"
+    "test:client": "bun run --elide-lines=0 --env-file=.env --filter @dzhng/claude-agent test"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
